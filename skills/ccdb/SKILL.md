@@ -1,7 +1,7 @@
 ---
 name: ccdb
 description: |
-  CCDB Carbon Emission Factor Search Tool. Based on the Carbonstop CCDB database, it queries carbon emission factor data via ccdb-mcp-server.
+  CCDB Carbon Emission Factor Search Tool. Based on the Carbonstop CCDB database, it queries carbon emission factor data directly via a lightweight script.
   Supports keyword search for carbon emission factors, retrieving structured JSON data, and multi-keyword comparisons.
 
   **Use this Skill when**:
@@ -14,47 +14,41 @@ description: |
 
 # CCDB Carbon Emission Factor Search
 
-Queries the Carbonstop CCDB emission factor database using [ccdb-mcp-server](https://www.npmjs.com/package/ccdb-mcp-server).
+Queries the Carbonstop CCDB emission factor database via directly calling the public HTTP API.
 
 ## Prerequisites
 
-Global installation of `ccdb-mcp-server` is required if using MCP:
-
-```bash
-npm install -g ccdb-mcp-server
-```
-
-No API Key is needed; it utilizes a public API.
+Zero dependencies. The tool uses a native Node.js script `scripts/ccdb-search.mjs` with built-in `crypto` and `fetch`. No API Key is needed.
 
 ## Available Tools
 
-The `ccdb-mcp` CLI can be called via `mcporter` in stdio mode, exposing 3 MCP tools:
+This skill comes with a lightweight CLI script `scripts/ccdb-search.mjs` that can be executed directly.
+You can execute it by running `node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs` (replace the path with the actual absolute path to the script).
 
-### 1. `search_factors` — Search Emission Factors (Formatted Output)
+### 1. Search Emission Factors (Formatted Output)
 
-**Purpose**: Search for carbon emission factors by keyword and return humane-readable formatted text.
+**Purpose**: Search for carbon emission factors by keyword and return human-readable formatted text.
 
 ```bash
-mcporter call ccdb-mcp --stdio -- search_factors '{"name":"electricity","lang":"en"}'
+node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs "电力"
+node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs "electricity" en
 ```
 
 Parameters:
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `name` | string | ✅ | Search keyword, e.g., "electricity", "cement", "steel", "natural gas" |
-| `lang` | `"zh"` \| `"en"` | ❌ | Target language for the search. Defaults to `zh` |
+*   `keyword`: Search keyword, e.g., "electricity", "cement", "steel", "natural gas"
+*   `lang`: (Optional) Target language for the search. Defaults to `zh`. Pass `en` for English.
 
 Returns: Formatted text containing the factor value, unit, applicable region, year, publishing institution, etc.
 
-### 2. `search_factors_json` — Search Emission Factors (JSON Output)
+### 2. Search Emission Factors (JSON Output)
 
-**Purpose**: Operates the same as `search_factors`, but returns structured JSON data. Highly recommended for programmatic handling and carbon emission calculations.
+**Purpose**: Operates the same as regular search, but returns structured JSON data. Highly recommended for programmatic handling and carbon emission calculations.
 
 ```bash
-mcporter call ccdb-mcp --stdio -- search_factors_json '{"name":"electricity","lang":"en"}'
+node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs "electricity" en --json
 ```
 
-Parameters are identical to `search_factors`.
+Parameters are identical to formatting search, just append the `--json` flag.
 
 JSON Return Fields:
 | Field | Description |
@@ -71,68 +65,23 @@ JSON Return Fields:
 | `business` | Industry sector |
 | `documentType` | Document/Source type |
 
-### 3. `compare_factors` — Compare Multiple Emission Factors
+### 3. Compare Multiple Emission Factors
 
 **Purpose**: Compare the carbon emission factors of up to 5 keywords simultaneously. Useful for horizontal comparison of different energy sources or materials.
 
 ```bash
-mcporter call ccdb-mcp --stdio -- compare_factors '{"keywords":["electricity","natural gas","coal"],"lang":"en"}'
-```
-
-Parameters:
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `keywords` | string[] | ✅ | List of search keywords, 1-5 items maximum |
-| `lang` | `"zh"` \| `"en"` | ❌ | Target language for the search. Defaults to `zh` |
-
-## Call Methods
-
-This skill bridges the `ccdb-mcp-server` via the `mcporter` CLI in stdio mode:
-
-```bash
-# General Format
-mcporter call ccdb-mcp --stdio -- <tool_name> '<json_arguments>'
-```
-
-If `mcporter` hasn't configured `ccdb-mcp` yet, register it first:
-
-```bash
-mcporter add ccdb-mcp --command "ccdb-mcp" --args "--stdio"
-```
-
-**Alternative Method** (using npx directly, no mcporter required):
-
-```bash
-echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"agent","version":"1.0.0"}}}' | npx -y ccdb-mcp-server --stdio 2>/dev/null
-```
-
-Or you can use the **Direct HTTP Call script** below (Recommended, as it's the most lightweight).
-
-## Direct Execution Script (Recommended · No MCP Server Needed)
-
-This skill comes with a lightweight CLI script `scripts/ccdb-search.mjs` that directly calls the CCDB public HTTP API, requiring ZERO dependencies.
-
-### Search Factors (Formatted Output)
-
-```bash
-node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs "电力"
-node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs "cement" en
-```
-
-### Search Factors (JSON Output, best for calculation)
-
-```bash
-node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs "electricity" en --json
-```
-
-### Compare Multiple Keywords
-
-```bash
 node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs --compare 电力 天然气 柴油
+node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs --compare electricity "natural gas" en
 node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs --compare electricity "natural gas" --json
 ```
 
+Parameters:
+*   `--compare`: Flag to trigger comparison mode.
+*   `keywords`: List of search keywords, 1-5 items maximum.
+
 ### Node.js One-Liner (Fallback)
+
+If the script is somehow inaccessible, you can use this standalone Node.js snippet:
 
 ```bash
 node -e "const c=require('crypto'),n=process.argv[1],s=c.createHash('md5').update('mcp_ccdb_search'+n).digest('hex');fetch('https://gateway.carbonstop.com/management/system/website/searchFactorDataMcp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sign:s,name:n,lang:'en'})}).then(r=>r.json()).then(d=>console.log(JSON.stringify(d,null,2)))" "electricity"
@@ -144,21 +93,21 @@ node -e "const c=require('crypto'),n=process.argv[1],s=c.createHash('md5').updat
 
 > User: What is the carbon emission factor for the Chinese power grid?
 
-→ Action: Search using the keyword `"electricity"` or `"China grid"`, filtering for the China region and the most recent year.
+→ Action: Execute `node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs "electricity" en` or `node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs "中国电网"`. Find the one corresponding to China and the most recent year.
 
 ### Scenario 2: Carbon Emission Calculation
 
 > User: My company used 500,000 kWh of electricity last year, what is the carbon footprint?
 
 → Workflow:
-1. Search the `"electricity"` factor (JSON output preferably), select China and the latest year.
+1. Search the `"electricity"` factor (preferably with `--json`), select China and the latest year.
 2. Calculate Carbon Emissions = 500,000 kWh × Factor Value (in kgCO₂e/kWh).
 
 ### Scenario 3: Comparing Energy Alternatives
 
 > User: Compare the carbon emission factors of electricity, natural gas, and diesel.
 
-→ Action: Use `compare_factors` with keywords = `["electricity", "natural gas", "diesel"]`.
+→ Action: Execute `node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs --compare "electricity" "natural gas" "diesel" en`
 
 ### Scenario 4: Querying Industry-Specific Data
 
@@ -172,4 +121,4 @@ node -e "const c=require('crypto'),n=process.argv[1],s=c.createHash('md5').updat
 2. **Pay Close Attention to Unit Conversion**: Different factors might have entirely different units (e.g., kgCO₂/kWh vs. tCO₂/TJ). Always double-check before doing mathematical calculations.
 3. **Data Authority / Providers**: Take note of the publishing institutions (e.g., MEE, IPCC, IEA, EPA).
 4. **No Results Found? Use Synonyms**: If the search yields empty results, attempt to use synonyms (e.g., translate your query, or map "power" → "electricity" → "grid").
-5. **Always Use JSON for Calculations**: The `search_factors_json` format returns highly precise numerical figures that are ideal for programmatic multiplication.
+5. **Always Use JSON for Calculations**: The `--json` format returns highly precise numerical figures that are ideal for programmatic multiplication.
