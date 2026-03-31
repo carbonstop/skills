@@ -1,37 +1,37 @@
 # 🧠 Carbonstop AI Skills
 
-**为 AI 编程助手赋予碳排放领域专业能力的 Skill 集合。**
+**A collection of Skills that empower AI coding assistants with professional capabilities in the carbon emission domain.**
 
-本仓库是 [碳阻迹（Carbonstop）](https://www.carbonstop.com) 开源的 AI Skill 合集，兼容主流 AI 编程助手（Gemini CLI / Claude Code / Cursor / Codex / OpenCode / OpenClaw），让 AI 能够理解碳排放相关查询，并调用碳阻迹的数据服务完成专业任务。
-
----
-
-## 📦 已有 Skills
-
-| Skill | 说明 | 关键能力 |
-|-------|------|----------|
-| [ccdb](./ccdb/) | CCDB 碳排放因子搜索 | 关键词搜索因子 · JSON 结构化输出 · 多因子对比 |
+This repository is an open-source AI Skill collection by [Carbonstop](https://www.carbonstop.com), compatible with mainstream AI coding assistants (Gemini CLI / Claude Code / Cursor / Codex / OpenCode / OpenClaw). It enables AI to understand carbon emission-related queries and invoke Carbonstop's data services to accomplish professional tasks.
 
 ---
 
-## 🚀 快速开始
+## 📦 Available Skills
 
-### 安装
+| Skill | Description | Key Capabilities |
+|-------|-------------|------------------|
+| [ccdb](./skills/ccdb/) | CCDB Carbon Emission Factor Search | Keyword factor search · Structured JSON output · Multi-factor comparison |
 
-选择你使用的 AI 编程助手，按照对应方式安装：
+---
+
+## 🚀 Quick Start
+
+### Installation
+
+Choose your AI coding assistant and install accordingly:
 
 <details>
 <summary><strong>Gemini CLI</strong></summary>
 
 ```bash
-# 全局安装
+# Global installation
 git clone https://github.com/carbonstop/skills.git ~/.gemini/carbonstop-skills
 
-# 或在项目中使用（仅当前项目生效）
+# Or use within a specific project (only effective in the current project)
 git clone https://github.com/carbonstop/skills.git .gemini/carbonstop-skills
 ```
 
-重启 Gemini CLI 即可自动发现 Skills。
+Restart Gemini CLI to automatically discover the Skills.
 
 </details>
 
@@ -42,13 +42,13 @@ git clone https://github.com/carbonstop/skills.git .gemini/carbonstop-skills
 claude mcp add-skill https://github.com/carbonstop/skills
 ```
 
-或手动安装：
+Or install manually:
 
 ```bash
 git clone https://github.com/carbonstop/skills.git ~/.claude/carbonstop-skills
 ```
 
-在 Claude Code 设置中将 skills 路径指向 `~/.claude/carbonstop-skills/`。
+In your Claude Code settings, point the skills path to `~/.claude/carbonstop-skills/`.
 
 </details>
 
@@ -59,7 +59,7 @@ git clone https://github.com/carbonstop/skills.git ~/.claude/carbonstop-skills
 git clone https://github.com/carbonstop/skills.git ~/.cursor/carbonstop-skills
 ```
 
-在 Cursor 设置中，将 skills 路径指向 `~/.cursor/carbonstop-skills/`。
+In your Cursor settings, point the skills path to `~/.cursor/carbonstop-skills/`.
 
 </details>
 
@@ -73,7 +73,7 @@ mkdir -p ~/.agents/skills
 ln -s ~/.codex/carbonstop-skills/ ~/.agents/skills/carbonstop-skills
 ```
 
-重启 Codex 以发现 Skills。
+Restart Codex to discover the Skills.
 
 </details>
 
@@ -87,20 +87,20 @@ mkdir -p ~/.config/opencode/skills
 ln -s ~/.carbonstop-skills/* ~/.config/opencode/skills/
 ```
 
-重启 OpenCode 以发现 Skills。
+Restart OpenCode to discover the Skills.
 
 </details>
 
 <details>
 <summary><strong>OpenClaw</strong></summary>
 
-在 OpenClaw 对话中直接发送本仓库链接，助手会自动完成安装：
+Simply paste the link to this repository in an OpenClaw conversation, and the assistant will install it automatically:
 
 ```
 https://github.com/carbonstop/skills
 ```
 
-或通过 ClawHub CLI 安装：
+Or install via ClawHub CLI:
 
 ```bash
 npx clawhub install carbonstop-skills
@@ -108,126 +108,128 @@ npx clawhub install carbonstop-skills
 
 </details>
 
-### 开始使用
+### Usage
 
-安装完成后，AI 编程助手会根据你的提问自动激活对应 Skill。例如：
+Once installed, your AI coding assistant will automatically activate the corresponding Skill based on your prompts. For example:
 
-> **你**：中国电网的碳排放因子是多少？
+> **You**: What is the carbon emission factor for the Chinese power grid?
 >
-> **AI**：*（自动调用 CCDB Skill 搜索）* 根据生态环境部 2022 年数据，中国电网平均排放因子为 0.5703 tCO₂/MWh……
+> **AI**: *(Automatically invokes the CCDB Skill search)* According to the 2022 data from the Ministry of Ecology and Environment, the average emission factor for the China Power Grid is 0.5703 tCO₂/MWh...
 
-> **你**：我公司去年用了 50 万度电，碳排放多少？
+> **You**: My company used 500,000 kWh of electricity last year. What is the carbon footprint?
 >
-> **AI**：*（搜索因子 → 计算）* 500,000 kWh × 0.5703 kgCO₂e/kWh ≈ 285,150 kgCO₂e ≈ 285.15 吨 CO₂e
+> **AI**: *(Searches factor → Calculates)* 500,000 kWh × 0.5703 kgCO₂e/kWh ≈ 285,150 kgCO₂e ≈ 285.15 tonnes CO₂e.
 
 ---
 
-## 📂 项目结构
+## 📂 Project Structure
 
 ```
 skills/
-├── README.md             # 本文件
-└── ccdb/                 # CCDB 碳排放因子搜索 Skill
-    ├── SKILL.md          # Skill 定义与使用说明
-    └── scripts/
-        └── ccdb-search.mjs  # 轻量 CLI 搜索脚本（无需安装依赖）
+├── README.md             # This file
+├── README_zh.md          # Chinese documentation
+└── skills/               # Skills directory
+    └── ccdb/             # CCDB Carbon Emission Factor Search Skill
+        ├── SKILL.md      # Skill definition and usage instructions
+        └── scripts/
+            └── ccdb-search.mjs  # Lightweight CLI search script (no installation needed)
 ```
 
 ---
 
-## 📖 Skill 详情
+## 📖 Skill Details
 
-### CCDB — 碳排放因子搜索
+### CCDB — Carbon Emission Factor Search
 
-基于碳阻迹 [CCDB 碳排放因子数据库](https://ccdb.carbonstop.com)，提供碳排放因子的搜索、查询与对比能力。
+Based on Carbonstop's [CCDB Carbon Emission Factor Database](https://ccdb.carbonstop.com), this provides the capability to search, query, and compare carbon emission factors.
 
-**核心功能：**
+**Core Features:**
 
-- 🔍 **关键词搜索** — 按名称搜索碳排放因子，支持中英文
-- 📊 **结构化输出** — 返回 JSON 格式数据，含因子值、单位、地区、年份、发布机构等
-- ⚖️ **多因子对比** — 同时对比最多 5 种能源/材料的排放因子
+- 🔍 **Keyword Search** — Search for carbon emission factors by name; supports English and Chinese.
+- 📊 **Structured Output** — Returns JSON-formatted data containing the factor value, unit, region, year, publishing institution, etc.
+- ⚖️ **Multi-factor Comparison** — Compare the emission factors of up to 5 energy sources/materials simultaneously.
 
-**支持的调用方式：**
+**Supported Invocation Methods:**
 
-| 方式 | 说明 | 是否需要安装 |
-|------|------|:---:|
-| 直接脚本 `ccdb-search.mjs` | 轻量 CLI 脚本，直接调 HTTP API | ❌ |
-| ccdb-mcp-server（stdio） | 标准 MCP Server，通过 mcporter 调用 | 需要 `npm i -g ccdb-mcp-server` |
-| ccdb-mcp-server（HTTP） | 标准 MCP Server，Streamable HTTP 模式 | 需要 `npm i -g ccdb-mcp-server` |
+| Method | Description | Installation Required |
+|--------|-------------|:---:|
+| Direct script `ccdb-search.mjs` | Lightweight CLI script, directly calls HTTP APIs | ❌ |
+| ccdb-mcp-server (stdio) | Standard MCP Server, invoked via `mcporter` | Needs `npm i -g ccdb-mcp-server` |
+| ccdb-mcp-server (HTTP) | Standard MCP Server, Streamable HTTP mode | Needs `npm i -g ccdb-mcp-server` |
 
-**快速体验（无需安装任何依赖）：**
+**Quick Experience (No dependencies required):**
 
 ```bash
-# 搜索碳排放因子
-node ccdb/scripts/ccdb-search.mjs "电力"
+# Search for a carbon emission factor
+node skills/ccdb/scripts/ccdb-search.mjs "electricity"
 
-# 英文搜索
-node ccdb/scripts/ccdb-search.mjs "cement" en
+# Search in English
+node skills/ccdb/scripts/ccdb-search.mjs "cement" en
 
-# JSON 输出（适合程序处理）
-node ccdb/scripts/ccdb-search.mjs "电力" zh --json
+# JSON output (ideal for programmatic handling)
+node skills/ccdb/scripts/ccdb-search.mjs "electricity" en --json
 
-# 多关键词对比
-node ccdb/scripts/ccdb-search.mjs --compare 电力 天然气 柴油
+# Compare multiple keywords
+node skills/ccdb/scripts/ccdb-search.mjs --compare electricity "natural gas" diesel
 ```
 
-> 详细文档请查看 [ccdb/SKILL.md](./ccdb/SKILL.md)
+> For detailed documentation, please refer to [skills/ccdb/SKILL.md](./skills/ccdb/SKILL.md)
 
 ---
 
-## 🤝 贡献指南
+## 🤝 Contribution Guidelines
 
-欢迎提交新的 Skill！每个 Skill 应遵循以下结构：
+We welcome submissions of new Skills! Each Skill should adhere to the following structure:
 
 ```
 skill-name/
-├── SKILL.md              # 必须 — Skill 定义文件（含 YAML 前置元数据 + Markdown 说明）
-├── scripts/              # 可选 — 辅助脚本
-├── examples/             # 可选 — 示例用法
-└── resources/            # 可选 — 额外资源文件
+├── SKILL.md              # Required — Skill definition file (includes YAML frontmatter + Markdown content)
+├── scripts/              # Optional — Helper scripts
+├── examples/             # Optional — Example usage
+└── resources/            # Optional — Additional resource files
 ```
 
-### SKILL.md 规范
+### SKILL.md Specification
 
 ```yaml
 ---
 name: skill-name
 description: |
-  Skill 的简短描述。
+  A brief description of the Skill.
 
-  **当以下情况时使用此 Skill**：
-  (1) 触发条件 1
-  (2) 触发条件 2
+  **Use this Skill when**:
+  (1) Trigger condition 1
+  (2) Trigger condition 2
 ---
 
-# Skill 标题
+# Skill Title
 
-详细使用说明……
+Detailed usage instructions...
 ```
 
-### 提交步骤
+### Steps to Submit
 
-1. Fork 本仓库
-2. 创建 feature 分支：`git checkout -b feat/my-new-skill`
-3. 按上述结构添加 Skill
-4. 提交 Pull Request
+1. Fork this repository
+2. Create a feature branch: `git checkout -b feat/my-new-skill`
+3. Add your Skill following the structure above
+4. Submit a Pull Request
 
 ---
 
-## 📄 许可证
+## 📄 License
 
 [MIT License](./LICENSE)
 
 ---
 
-## 🔗 相关链接
+## 🔗 Related Links
 
-- **碳阻迹官网**：[https://www.carbonstop.com](https://www.carbonstop.com)
-- **CCDB 碳排放因子数据库**：[https://ccdb.carbonstop.com](https://ccdb.carbonstop.com)
-- **ccdb-mcp-server（npm）**：[https://www.npmjs.com/package/ccdb-mcp-server](https://www.npmjs.com/package/ccdb-mcp-server)
-- **Gemini CLI**：[https://github.com/google-gemini/gemini-cli](https://github.com/google-gemini/gemini-cli)
-- **Claude Code**：[https://docs.anthropic.com/en/docs/claude-code](https://docs.anthropic.com/en/docs/claude-code)
-- **Cursor**：[https://www.cursor.com](https://www.cursor.com)
-- **Codex**：[https://github.com/openai/codex](https://github.com/openai/codex)
-- **OpenCode**：[https://github.com/opencode-ai/opencode](https://github.com/opencode-ai/opencode)
-- **OpenClaw**：[https://openclaw.ai](https://openclaw.ai)
+- **Carbonstop Official Website**: [https://www.carbonstop.com](https://www.carbonstop.com)
+- **CCDB Carbon Emission Factor Database**: [https://ccdb.carbonstop.com](https://ccdb.carbonstop.com)
+- **ccdb-mcp-server (npm)**: [https://www.npmjs.com/package/ccdb-mcp-server](https://www.npmjs.com/package/ccdb-mcp-server)
+- **Gemini CLI**: [https://github.com/google-gemini/gemini-cli](https://github.com/google-gemini/gemini-cli)
+- **Claude Code**: [https://docs.anthropic.com/en/docs/claude-code](https://docs.anthropic.com/en/docs/claude-code)
+- **Cursor**: [https://www.cursor.com](https://www.cursor.com)
+- **Codex**: [https://github.com/openai/codex](https://github.com/openai/codex)
+- **OpenCode**: [https://github.com/opencode-ai/opencode](https://github.com/opencode-ai/opencode)
+- **OpenClaw**: [https://openclaw.ai](https://openclaw.ai)
