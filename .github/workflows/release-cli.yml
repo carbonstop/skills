@@ -80,5 +80,5 @@ jobs:
             chmod +x ccdb && sudo mv ccdb /usr/local/bin/
 
             # Or install via npm
-            npm install -g @carbonstop/ccdb
+            npm install -g carbonstop-ccdb
             ```
