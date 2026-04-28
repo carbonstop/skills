@@ -16,7 +16,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const buildBinary = process.argv.includes('--binary');
 
 const DIST_DIR = resolve(__dirname, 'dist');
-const BUNDLE_PATH = resolve(DIST_DIR, 'ccdb.mjs');
+const BUNDLE_PATH = resolve(DIST_DIR, 'ccdb.js');
 const CJS_BUNDLE_PATH = resolve(DIST_DIR, 'ccdb.cjs');
 const SEA_CONFIG_PATH = resolve(DIST_DIR, 'sea-config.json');
 const BLOB_PATH = resolve(DIST_DIR, 'ccdb.blob');
@@ -46,7 +46,7 @@ try {
   );
   // Make it executable
   chmodSync(BUNDLE_PATH, 0o755);
-  console.log(`✅ ESM bundle created: dist/ccdb.mjs`);
+  console.log(`✅ ESM bundle created: dist/ccdb.js`);
 } catch (err) {
   console.error('❌ esbuild failed:', err.message);
   process.exit(1);

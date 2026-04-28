@@ -8,10 +8,10 @@ A standalone command-line tool to query carbon emission factors from the [Carbon
 
 ```bash
 # Global install
-npm install -g @carbonstop/ccdb
+npm install -g carbonstop-ccdb
 
 # Or use without installing
-npx @carbonstop/ccdb search "电力"
+npx carbonstop-ccdb search "电力"
 ```
 
 ### Download Binary (no Node.js required)
@@ -100,7 +100,7 @@ Build outputs:
 
 | File | Description | Size |
 |------|-------------|------|
-| `dist/ccdb.mjs` | ESM bundle (npm) | ~12 KB |
+| `dist/ccdb.js` | ESM bundle (npm) | ~12 KB |
 | `dist/ccdb` | Standalone binary | ~103 MB |
 
 ## How It Works

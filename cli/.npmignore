@@ -1,0 +1,6 @@
+# Ignore source files and build scripts since we only distribute the bundle
+src/
+build.mjs
+sea-config.json
+*.blob
+ccdb

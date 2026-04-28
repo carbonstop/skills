@@ -128,7 +128,7 @@ npx clawhub install carbonstop-skills
 skills/
 ├── README.md             # 本文件
 ├── cli/                  # 独立 CLI 二进制工具
-│   ├── package.json      # npm 包配置（@carbonstop/ccdb）
+│   ├── package.json      # npm 包配置（carbonstop-ccdb）
 │   ├── src/              # CLI 源代码
 │   ├── build.mjs         # 构建脚本（esbuild + Node.js SEA）
 │   └── dist/             # 构建输出（二进制 + bundle）
@@ -156,7 +156,7 @@ skills/
 | 方式 | 说明 | 是否需要安装 |
 |------|------|:---:|
 | **`ccdb` CLI 二进制** | 独立二进制，无需 Node.js | 从 [Releases](https://github.com/carbonstop/skills/releases) 下载 |
-| **`npx @carbonstop/ccdb`** | 通过 npx 运行，自动下载 | 需要 Node.js ≥ 18 |
+| **`npx carbonstop-ccdb`** | 通过 npx 运行，自动下载 | 需要 Node.js ≥ 18 |
 | ccdb-mcp-server（stdio） | 标准 MCP Server，通过 mcporter 调用 | 需要 `npm i -g ccdb-mcp-server` |
 | ccdb-mcp-server（HTTP） | 标准 MCP Server，Streamable HTTP 模式 | 需要 `npm i -g ccdb-mcp-server` |
 
@@ -164,7 +164,7 @@ skills/
 
 ```bash
 # 全局安装
-npm install -g @carbonstop/ccdb
+npm install -g carbonstop-ccdb
 
 # 搜索碳排放因子
 ccdb search "电力"

@@ -16,7 +16,7 @@ import { searchCommand } from './commands/search.mjs';
 import { compareCommand } from './commands/compare.mjs';
 import { bold, cyan, green, yellow, dim, gray, magenta, brightCyan, red } from './utils/colors.mjs';
 
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 
 // ─── Help Text ──────────────────────────────────────────────
 

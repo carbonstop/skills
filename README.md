@@ -129,7 +129,7 @@ skills/
 ├── README.md             # This file
 ├── README_zh.md          # Chinese documentation
 ├── cli/                  # Standalone CLI binary tool
-│   ├── package.json      # npm package (@carbonstop/ccdb)
+│   ├── package.json      # npm package (carbonstop-ccdb)
 │   ├── src/              # CLI source code
 │   ├── build.mjs         # Build script (esbuild + Node.js SEA)
 │   └── dist/             # Build output (binary + bundle)
@@ -157,7 +157,7 @@ Based on Carbonstop's [CCDB Carbon Emission Factor Database](https://ccdb.carbon
 | Method | Description | Installation Required |
 |--------|-------------|:---:|
 | **`ccdb` CLI binary** | Standalone binary, no Node.js needed | Download from [Releases](https://github.com/carbonstop/skills/releases) |
-| **`npx @carbonstop/ccdb`** | Run via npx, auto-downloads | Needs Node.js ≥ 18 |
+| **`npx carbonstop-ccdb`** | Run via npx, auto-downloads | Needs Node.js ≥ 18 |
 | ccdb-mcp-server (stdio) | Standard MCP Server, invoked via `mcporter` | Needs `npm i -g ccdb-mcp-server` |
 | ccdb-mcp-server (HTTP) | Standard MCP Server, Streamable HTTP mode | Needs `npm i -g ccdb-mcp-server` |
 
@@ -165,7 +165,7 @@ Based on Carbonstop's [CCDB Carbon Emission Factor Database](https://ccdb.carbon
 
 ```bash
 # Install globally via npm
-npm install -g @carbonstop/ccdb
+npm install -g carbonstop-ccdb
 
 # Search for emission factors
 ccdb search "electricity" --lang en
