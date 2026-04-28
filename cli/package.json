@@ -1,0 +1,46 @@
+{
+  "name": "@carbonstop/ccdb",
+  "version": "1.0.0",
+  "description": "🌍 CCDB Carbon Emission Factor Search CLI — Query carbon emission factors from the Carbonstop CCDB database",
+  "type": "module",
+  "bin": {
+    "ccdb": "./dist/ccdb.mjs"
+  },
+  "scripts": {
+    "dev": "node src/index.mjs",
+    "build": "node build.mjs",
+    "build:binary": "node build.mjs --binary",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist/ccdb.mjs",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "carbon",
+    "emission",
+    "factor",
+    "ccdb",
+    "carbonstop",
+    "climate",
+    "sustainability",
+    "co2",
+    "greenhouse-gas",
+    "cli"
+  ],
+  "author": "Carbonstop <dev@carbonstop.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carbonstop/skills.git",
+    "directory": "cli"
+  },
+  "homepage": "https://github.com/carbonstop/skills",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}

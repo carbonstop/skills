@@ -1,0 +1,84 @@
+name: Build & Release CLI Binary
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: linux-x64
+            node: 22
+          - os: macos-latest
+            target: darwin-arm64
+            node: 22
+          - os: macos-13
+            target: darwin-x64
+            node: 22
+
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      
+      - name: Build binary
+        working-directory: cli
+        run: |
+          npm run build:binary
+          mv dist/ccdb dist/ccdb-${{ matrix.target }}
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ccdb-${{ matrix.target }}
+          path: cli/dist/ccdb-${{ matrix.target }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ccdb-*
+          generate_release_notes: true
+          body: |
+            ## 🌍 CCDB CLI Binary Release
+
+            Download the binary for your platform:
+
+            | Platform | File |
+            |----------|------|
+            | macOS (Apple Silicon) | `ccdb-darwin-arm64` |
+            | macOS (Intel) | `ccdb-darwin-x64` |
+            | Linux (x64) | `ccdb-linux-x64` |
+
+            ### Quick Install
+
+            ```bash
+            # macOS (Apple Silicon)
+            curl -L -o ccdb https://github.com/carbonstop/skills/releases/download/${{ github.ref_name }}/ccdb-darwin-arm64
+            chmod +x ccdb && sudo mv ccdb /usr/local/bin/
+
+            # Or install via npm
+            npm install -g @carbonstop/ccdb
+            ```

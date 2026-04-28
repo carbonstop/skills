@@ -1,7 +1,7 @@
 ---
 name: ccdb
 description: |
-  CCDB Carbon Emission Factor Search Tool. Based on the Carbonstop CCDB database, it queries carbon emission factor data directly via a lightweight script.
+  CCDB Carbon Emission Factor Search Tool. Based on the Carbonstop CCDB database, it queries carbon emission factor data via the `@carbonstop/ccdb` CLI.
   Supports keyword search for carbon emission factors, retrieving structured JSON data, and multi-keyword comparisons.
 
   **Use this Skill when**:
@@ -18,25 +18,25 @@ Queries the Carbonstop CCDB emission factor database via directly calling the pu
 
 ## Prerequisites
 
-Zero dependencies. The tool uses a native Node.js script `scripts/ccdb-search.mjs` with built-in `crypto` and `fetch`. No API Key is needed.
+Requires Node.js ≥ 18 (for `npx`). No API Key is needed. The CLI uses built-in `crypto` and `fetch` with zero runtime dependencies.
 
 ## Available Tools
 
-This skill comes with a lightweight CLI script `scripts/ccdb-search.mjs` that can be executed directly.
-You can execute it by running `node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs` (replace the path with the actual absolute path to the script).
+This skill relies on the `@carbonstop/ccdb` CLI. Because it is published to npm, you don't need to worry about absolute paths or local files.
+You can execute it anywhere by running `npx -y @carbonstop/ccdb <command> [options]`.
 
 ### 1. Search Emission Factors (Formatted Output)
 
 **Purpose**: Search for carbon emission factors by keyword and return human-readable formatted text.
 
 ```bash
-node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs "电力"
-node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs "electricity" en
+npx -y @carbonstop/ccdb search "电力"
+npx -y @carbonstop/ccdb search "electricity" --lang en
 ```
 
 Parameters:
 *   `keyword`: Search keyword, e.g., "electricity", "cement", "steel", "natural gas"
-*   `lang`: (Optional) Target language for the search. Defaults to `zh`. Pass `en` for English.
+*   `--lang`: (Optional) Target language for the search. Defaults to `zh`. Pass `--lang en` for English.
 
 Returns: Formatted text containing the factor value, unit, applicable region, year, publishing institution, etc.
 
@@ -45,7 +45,7 @@ Returns: Formatted text containing the factor value, unit, applicable region, ye
 **Purpose**: Operates the same as regular search, but returns structured JSON data. Highly recommended for programmatic handling and carbon emission calculations.
 
 ```bash
-node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs "electricity" en --json
+npx -y @carbonstop/ccdb search "electricity" --lang en --json
 ```
 
 Parameters are identical to formatting search, just append the `--json` flag.
@@ -70,22 +70,15 @@ JSON Return Fields:
 **Purpose**: Compare the carbon emission factors of up to 5 keywords simultaneously. Useful for horizontal comparison of different energy sources or materials.
 
 ```bash
-node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs --compare 电力 天然气 柴油
-node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs --compare electricity "natural gas" en
-node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs --compare electricity "natural gas" --json
+npx -y @carbonstop/ccdb compare 电力 天然气 柴油
+npx -y @carbonstop/ccdb compare electricity "natural gas" --lang en
+npx -y @carbonstop/ccdb compare electricity "natural gas" --json
 ```
 
 Parameters:
-*   `--compare`: Flag to trigger comparison mode.
+*   `compare`: Use the `compare` subcommand.
 *   `keywords`: List of search keywords, 1-5 items maximum.
 
-### Node.js One-Liner (Fallback)
-
-If the script is somehow inaccessible, you can use this standalone Node.js snippet:
-
-```bash
-node -e "const c=require('crypto'),n=process.argv[1],s=c.createHash('md5').update('mcp_ccdb_search'+n).digest('hex');fetch('https://gateway.carbonstop.com/management/system/website/searchFactorDataMcp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sign:s,name:n,lang:'en'})}).then(r=>r.json()).then(d=>console.log(JSON.stringify(d,null,2)))" "electricity"
-```
 
 ## Usage Scenarios & Examples
 
@@ -93,7 +86,7 @@ node -e "const c=require('crypto'),n=process.argv[1],s=c.createHash('md5').updat
 
 > User: What is the carbon emission factor for the Chinese power grid?
 
-→ Action: Execute `node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs "electricity" en` or `node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs "中国电网"`. Find the one corresponding to China and the most recent year.
+→ Action: Execute `npx -y @carbonstop/ccdb search "electricity" --lang en` or `npx -y @carbonstop/ccdb search "中国电网"`. Find the one corresponding to China and the most recent year.
 
 ### Scenario 2: Carbon Emission Calculation
 
@@ -107,7 +100,7 @@ node -e "const c=require('crypto'),n=process.argv[1],s=c.createHash('md5').updat
 
 > User: Compare the carbon emission factors of electricity, natural gas, and diesel.
 
-→ Action: Execute `node /workspace/skills/skills/ccdb/scripts/ccdb-search.mjs --compare "electricity" "natural gas" "diesel" en`
+→ Action: Execute `npx -y @carbonstop/ccdb compare electricity "natural gas" diesel --lang en`
 
 ### Scenario 4: Querying Industry-Specific Data
 

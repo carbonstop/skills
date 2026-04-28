@@ -128,11 +128,14 @@ Once installed, your AI coding assistant will automatically activate the corresp
 skills/
 ├── README.md             # This file
 ├── README_zh.md          # Chinese documentation
+├── cli/                  # Standalone CLI binary tool
+│   ├── package.json      # npm package (@carbonstop/ccdb)
+│   ├── src/              # CLI source code
+│   ├── build.mjs         # Build script (esbuild + Node.js SEA)
+│   └── dist/             # Build output (binary + bundle)
 └── skills/               # Skills directory
     └── ccdb/             # CCDB Carbon Emission Factor Search Skill
-        ├── SKILL.md      # Skill definition and usage instructions
-        └── scripts/
-            └── ccdb-search.mjs  # Lightweight CLI search script (no installation needed)
+        └── SKILL.md      # Skill definition and usage instructions
 ```
 
 ---
@@ -153,24 +156,25 @@ Based on Carbonstop's [CCDB Carbon Emission Factor Database](https://ccdb.carbon
 
 | Method | Description | Installation Required |
 |--------|-------------|:---:|
-| Direct script `ccdb-search.mjs` | Lightweight CLI script, directly calls HTTP APIs | ❌ |
+| **`ccdb` CLI binary** | Standalone binary, no Node.js needed | Download from [Releases](https://github.com/carbonstop/skills/releases) |
+| **`npx @carbonstop/ccdb`** | Run via npx, auto-downloads | Needs Node.js ≥ 18 |
 | ccdb-mcp-server (stdio) | Standard MCP Server, invoked via `mcporter` | Needs `npm i -g ccdb-mcp-server` |
 | ccdb-mcp-server (HTTP) | Standard MCP Server, Streamable HTTP mode | Needs `npm i -g ccdb-mcp-server` |
 
-**Quick Experience (No dependencies required):**
+**Quick Experience — CLI Binary (recommended):**
 
 ```bash
-# Search for a carbon emission factor
-node skills/ccdb/scripts/ccdb-search.mjs "electricity"
+# Install globally via npm
+npm install -g @carbonstop/ccdb
 
-# Search in English
-node skills/ccdb/scripts/ccdb-search.mjs "cement" en
+# Search for emission factors
+ccdb search "electricity" --lang en
 
 # JSON output (ideal for programmatic handling)
-node skills/ccdb/scripts/ccdb-search.mjs "electricity" en --json
+ccdb search "electricity" --lang en --json
 
 # Compare multiple keywords
-node skills/ccdb/scripts/ccdb-search.mjs --compare electricity "natural gas" diesel
+ccdb compare electricity "natural gas" diesel --lang en
 ```
 
 > For detailed documentation, please refer to [skills/ccdb/SKILL.md](./skills/ccdb/SKILL.md)
