@@ -1,7 +1,7 @@
 ---
 name: ccdb
 description: |
-  CCDB Carbon Emission Factor Search Tool. Based on the Carbonstop CCDB database, it queries carbon emission factor data via the `@carbonstop/ccdb` CLI.
+  CCDB Carbon Emission Factor Search Tool. Based on the Carbonstop CCDB database, it queries carbon emission factor data via the `carbonstop-ccdb` CLI.
   Supports keyword search for carbon emission factors, retrieving structured JSON data, and multi-keyword comparisons.
 
   **Use this Skill when**:
@@ -23,15 +23,15 @@ Requires Node.js ≥ 18 (for `npx`). No API Key is needed. The CLI uses built-in
 ## Available Tools
 
 This skill relies on the `carbonstop-ccdb` CLI. Because it is published to npm, you don't need to worry about absolute paths or local files.
-You can execute it anywhere by running `npx -y carbonstop-ccdb <command> [options]`.
+You can execute it anywhere by running `npx carbonstop-ccdb <command> [options]`.
 
 ### 1. Search Emission Factors (Formatted Output)
 
 **Purpose**: Search for carbon emission factors by keyword and return human-readable formatted text.
 
 ```bash
-npx -y carbonstop-ccdb search "电力"
-npx -y carbonstop-ccdb search "electricity" --lang en
+npx carbonstop-ccdb search "电力"
+npx carbonstop-ccdb search "electricity" --lang en
 ```
 
 Parameters:
@@ -45,7 +45,7 @@ Returns: Formatted text containing the factor value, unit, applicable region, ye
 **Purpose**: Operates the same as regular search, but returns structured JSON data. Highly recommended for programmatic handling and carbon emission calculations.
 
 ```bash
-npx -y carbonstop-ccdb search "electricity" --lang en --json
+npx carbonstop-ccdb search "electricity" --lang en --json
 ```
 
 Parameters are identical to formatting search, just append the `--json` flag.
@@ -70,9 +70,9 @@ JSON Return Fields:
 **Purpose**: Compare the carbon emission factors of up to 5 keywords simultaneously. Useful for horizontal comparison of different energy sources or materials.
 
 ```bash
-npx -y carbonstop-ccdb compare 电力 天然气 柴油
-npx -y carbonstop-ccdb compare electricity "natural gas" --lang en
-npx -y carbonstop-ccdb compare electricity "natural gas" --json
+npx carbonstop-ccdb compare 电力 天然气 柴油
+npx carbonstop-ccdb compare electricity "natural gas" --lang en
+npx carbonstop-ccdb compare electricity "natural gas" --json
 ```
 
 Parameters:
@@ -86,7 +86,7 @@ Parameters:
 
 > User: What is the carbon emission factor for the Chinese power grid?
 
-→ Action: Execute `npx -y carbonstop-ccdb search "electricity" --lang en` or `npx -y carbonstop-ccdb search "中国电网"`. Find the one corresponding to China and the most recent year.
+→ Action: Execute `npx carbonstop-ccdb search "electricity" --lang en` or `npx carbonstop-ccdb search "中国电网"`. Find the one corresponding to China and the most recent year.
 
 ### Scenario 2: Carbon Emission Calculation
 
@@ -100,7 +100,7 @@ Parameters:
 
 > User: Compare the carbon emission factors of electricity, natural gas, and diesel.
 
-→ Action: Execute `npx -y carbonstop-ccdb compare electricity "natural gas" diesel --lang en`
+→ Action: Execute `npx carbonstop-ccdb compare electricity "natural gas" diesel --lang en`
 
 ### Scenario 4: Querying Industry-Specific Data
 
