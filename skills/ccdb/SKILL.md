@@ -20,6 +20,16 @@ Queries the Carbonstop CCDB emission factor database via directly calling the pu
 
 Requires Node.js ≥ 18 (for `npx`). No API Key is needed. The CLI uses built-in `crypto` and `fetch` with zero runtime dependencies.
 
+## Security & Auditability
+
+To ensure safe, deterministic execution and mitigate supply-chain risks, this skill pins the execution to `carbonstop-ccdb@1.0.1`.
+- **Source Code**: [github.com/carbonstop/skills/tree/main/cli](https://github.com/carbonstop/skills/tree/main/cli)
+- **NPM Package**: [npmjs.com/package/carbonstop-ccdb](https://www.npmjs.com/package/carbonstop-ccdb)
+- **Engines**: Requires Node.js `>=18.0.0`
+- **Dependencies**: 0 runtime dependencies.
+
+Agents should run this CLI in a sandboxed environment if possible, or verify the exact version hash on the npm registry.
+
 ## Available Tools
 
 This skill relies on the `carbonstop-ccdb` CLI. Because it is published to npm, you don't need to worry about absolute paths or local files.
