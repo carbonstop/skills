@@ -23,7 +23,7 @@ See [installation and authentication](skills/ccdb/references/access.md). Install
 | [ccdb-mcp](https://github.com/carbonstop/ccdb-mcp) | MCP server, authentication and deployment integration |
 | This repository | Factor selection guidance, tool usage and installation instructions |
 
-The CLI repository may require organization access until its public release is approved. New scoped npm packages are not published as part of this migration; use a maintainer-provided tarball or build from source.
+The CLI repository may require organization access until its public release is approved. The final npm package name is `ccdb-cli`; check that the requested version is published before installing, or use a maintainer-provided tarball/build from source.
 
 ## Migration
 
@@ -31,4 +31,4 @@ Based on `ccdb-integrations` commit `b69f46b5b6f44c70067032a01edaafd13aa790d4`. 
 
 Legacy `carbonstop-ccdb` / `ccdb` and legacy MCP tool names are not compatible substitutes for the new commands. No automatic fallback to unauthenticated endpoints is permitted. The old bundled Skill script is not shipped: Skill updates and executable updates now have separate lifecycles.
 
-When changing command/tool contracts, update this Skill and its references in a coordinated PR. Current compatibility target: `@carbonstop/ccdb-cli` 0.1.x and `ccdb-mcp-server` 2.x. Future breaking versions require verification. Backend deployment and user permissions remain required.
+When changing command/tool contracts, update this Skill and its references in a coordinated PR. Current compatibility target: `ccdb-cli` 0.1.x and `ccdb-mcp-server` 2.x. Future breaking versions require verification. Backend deployment and user permissions remain required.

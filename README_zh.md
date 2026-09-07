@@ -14,7 +14,7 @@
 - [ccdb-mcp](https://github.com/carbonstop/ccdb-mcp)：MCP 服务和认证集成。
 - 本仓库：因子匹配规则、调用规范、安装说明。
 
-迁移来源为 `ccdb-integrations` 的 `b69f46b5b6f44c70067032a01edaafd13aa790d4`。当前适配 `@carbonstop/ccdb-cli` 0.1.x 和 `ccdb-mcp-server` 2.x；后续破坏性变更需要联动更新说明。
+迁移来源为 `ccdb-integrations` 的 `b69f46b5b6f44c70067032a01edaafd13aa790d4`。当前适配 `ccdb-cli` 0.1.x 和 `ccdb-mcp-server` 2.x；后续破坏性变更需要联动更新说明。
 
 本 PR 移除旧 `cli/` 和 CLI 发布工作流，但保留 Git 历史、已存在的标签和发布物。旧 `carbonstop-ccdb` / `ccdb` 不是新 `ccdb-cli` 的兼容入口；Skill 不会回退到旧免授权 API。
 
