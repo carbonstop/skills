@@ -2,6 +2,10 @@
 
 ## 安装独立 CLI 或接入 MCP
 
+CLI 的命令统一为 `ccdb-cli`，npm 包名为 `@carbonstop/ccdb-cli`。除了需要 Node.js 的 npm 包，也可安装官方提供的对应系统/架构二进制 `ccdb-cli`（Windows 为 `ccdb-cli.exe`），直接执行无需 Node.js。macOS/Linux 解压 CI 下载包后如缺执行权限，运行 `chmod +x ccdb-cli`。只使用可信来源的构建产物，不绕过系统安全检查。详见 [CLI 分发说明](https://github.com/carbonstop/ccdb-cli/blob/main/docs/DISTRIBUTION.md)。
+
+MCP 包名保持 `ccdb-mcp-server`，命令 `ccdb-mcp`；新版契约从 2.0.0 开始，不要把旧 1.x 当作新版工具。安装前确认目标版本已发布。
+
 本 Skill 不包含程序。优先复用宿主中已配置的新版 MCP；不需要同时安装 CLI。
 需要 CLI 时，在用户同意安装后使用 [ccdb-cli](https://github.com/carbonstop/ccdb-cli) 的源码或维护者提供的可信 tgz。仓库尚未公开时需组织权限。
 
@@ -11,7 +15,7 @@
 npm ci
 npm run verify
 npm install -g ./dist/releases/carbonstop-ccdb-cli-0.1.0.tgz
-ccdb-connect --version
+ccdb-cli --version
 ```
 
 只有确认官方已发布目标版本后，才使用 `npm install -g @carbonstop/ccdb-cli@<已发布版本>`。不要把占位版本照抄执行。该迁移本身不发布 npm；旧包 `carbonstop-ccdb` 不等价于新版。
@@ -25,9 +29,9 @@ ccdb-connect --version
 用户可在宿主 Secret/环境中配置完整 `CCDB_API_KEY`，或在终端明确执行：
 
 ```sh
-ccdb-connect auth login --method device --no-browser
-ccdb-connect auth login --method pkce
-ccdb-connect auth login --method api-key
+ccdb-cli auth login --method device --no-browser
+ccdb-cli auth login --method pkce
+ccdb-cli auth login --method api-key
 ```
 
 设备码登录输出授权 URL 和可见 user_code，用户自行打开 Carbon Agent 登录并允许访问。不要在工具里模拟用户同意。后台须登记该环境的 `ccdb-connect-local` 客户端；其他客户端由管理员登记后显式设置 `CCDB_CLIENT_ID`。
@@ -37,8 +41,8 @@ CLI不接收明文 Key 命令行参数。api-key 登录采用不回显输入或 
 诊断：
 
 ```sh
-ccdb-connect doctor --json
-ccdb-connect auth status --json
+ccdb-cli doctor --json
+ccdb-cli auth status --json
 ```
 
 doctor 检查发现端点，不查询因子、不消耗因子查询额度；status 只反映本地凭证，不代表远程权限仍有效。

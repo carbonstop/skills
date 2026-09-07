@@ -9,12 +9,12 @@ description: 查询、比较并选择适合核算场景的 CCDB 排放因子，�
 
 优先使用宿主已连接的新版 MCP 工具 `search_emission_factors`、`get_emission_factor_detail`。它们返回的是 CCDB 候选与详情，不是模型已经完成的推荐。
 
-没有这两个工具时，使用单独安装的 CCDB CLI（Node.js 22+）。本 Skill 不包含可执行程序；安装方法见 [接入说明](references/access.md)。
+没有这两个工具时，使用单独安装的 CCDB CLI（npm 版需要 Node.js 22+，独立二进制无需 Node.js）。本 Skill 不包含可执行程序；安装方法见 [接入说明](references/access.md)。
 
 ```sh
-ccdb-connect auth status --json
-ccdb-connect factor search "电力" --limit 5 --json
-ccdb-connect factor detail "2232515359983616" --language zh --json
+ccdb-cli auth status --json
+ccdb-cli factor search "电力" --limit 5 --json
+ccdb-cli factor detail "2232515359983616" --language zh --json
 ```
 
 示例 ID 不保证在当前环境可用；实际详情必须使用搜索返回的 ID。需要先安装 CLI，或接入新版 MCP。宿主没有CLI执行或 MCP 能力时，明确说明需要接入工具，不能凭空生成查询结果。

@@ -11,7 +11,7 @@ Install the entire [skills/ccdb](skills/ccdb) directory, including references an
 The skill searches and evaluates emission factors using either:
 
 - The configured OAuth-enabled CCDB MCP tools `search_emission_factors` / `get_emission_factor_detail`; or
-- The separately installed `ccdb-connect` CLI (Node.js 22+).
+- The separately installed `ccdb-cli` CLI (npm requires Node.js 22+; native binaries do not).
 
 See [installation and authentication](skills/ccdb/references/access.md). Installing this Skill alone does not install software, grant database access or perform login. Never paste tokens or API Keys into chat.
 
@@ -31,4 +31,4 @@ Based on `ccdb-integrations` commit `b69f46b5b6f44c70067032a01edaafd13aa790d4`. 
 
 Legacy `carbonstop-ccdb` / `ccdb` and legacy MCP tool names are not compatible substitutes for the new commands. No automatic fallback to unauthenticated endpoints is permitted. The old bundled Skill script is not shipped: Skill updates and executable updates now have separate lifecycles.
 
-When changing command/tool contracts, update this Skill and its references in a coordinated PR. Current compatibility target: Connect 0.1.x CLI/MCP contracts from the source commit above; future versions require verification. Backend deployment and user permissions remain required.
+When changing command/tool contracts, update this Skill and its references in a coordinated PR. Current compatibility target: `@carbonstop/ccdb-cli` 0.1.x and `ccdb-mcp-server` 2.x. Future breaking versions require verification. Backend deployment and user permissions remain required.

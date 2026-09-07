@@ -10,7 +10,7 @@ test('CCDB skill keeps its install identity, references and separate CLI contrac
   assert.match(skill, /^---\nname: ccdb\ndescription: .+\n---/);
   assert.ok(skill.includes('search_emission_factors'));
   assert.ok(skill.includes('get_emission_factor_detail'));
-  assert.ok(skill.includes('ccdb-connect factor search'));
+  assert.ok(skill.includes('ccdb-cli factor search'));
   for (const file of ['SKILL.md', 'references/access.md', 'references/matching.md']) {
     const path = resolve(root, 'skills/ccdb', file);
     const text = await readFile(path, 'utf8');
