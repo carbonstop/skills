@@ -4,12 +4,21 @@
 
 CLI 的命令统一为 `ccdb-cli`，npm 包名为 `ccdb-cli`。除了需要 Node.js 的 npm 包，也可安装官方提供的对应系统/架构二进制 `ccdb-cli`（Windows 为 `ccdb-cli.exe`），直接执行无需 Node.js。macOS/Linux 解压 CI 下载包后如缺执行权限，运行 `chmod +x ccdb-cli`。只使用可信来源的构建产物，不绕过系统安全检查。详见 [CLI 分发说明](https://github.com/carbonstop/ccdb-cli/blob/main/docs/DISTRIBUTION.md)。
 
-MCP 包名保持 `ccdb-mcp-server`，命令 `ccdb-mcp`；新版契约从 2.0.0 开始，不要把旧 1.x 当作新版工具。安装前确认目标版本已发布。
+MCP 包名保持 `ccdb-mcp-server`，命令 `ccdb-mcp`；2.0.0 已发布，不要把旧 1.x 当作新版工具。
 
 本 Skill 不包含程序。优先复用宿主中已配置的新版 MCP；不需要同时安装 CLI。
-需要 CLI 时，在用户同意安装后使用 [ccdb-cli](https://github.com/carbonstop/ccdb-cli) 的源码或维护者提供的可信 tgz。仓库尚未公开时需组织权限。
+需要 CLI 时，在用户同意安装后从 npm 安装，无需克隆源码（npm 版需要 Node.js 22+）：
 
-在 CLI 仓库内构建并安装开发版本（Node.js 22+）：
+```sh
+npm install -g ccdb-cli
+ccdb-cli --version
+```
+
+固定已验证版本可用 `npm install -g ccdb-cli@0.1.0`。镜像未同步时追加 `--registry=https://registry.npmjs.org/`。MCP 可单独安装 `npm install -g ccdb-mcp-server@2.0.0`。旧包 `carbonstop-ccdb` 不等价于新版。
+
+### 仅开发人员：本地源码安装
+
+以下在 [CLI 仓库](https://github.com/carbonstop/ccdb-cli) 根目录运行，仅用于测试未发布的源码改动。仓库仍为私有时需组织访问权限：
 
 ```sh
 npm ci
@@ -18,7 +27,7 @@ npm install -g ./dist/releases/ccdb-cli-0.1.0.tgz
 ccdb-cli --version
 ```
 
-只有确认官方已发布目标版本后，才使用 `npm install -g ccdb-cli@<已发布版本>`。不要把占位版本照抄执行。该迁移本身不发布 npm；旧包 `carbonstop-ccdb` 不等价于新版。
+上面的 tgz 来自 `npm run verify`，不是普通用户的安装前置条件。
 
 没有安装权限、可用发布物或执行能力时，停止并说明缺失条件，不自动下载其他软件或伪造结果。MCP 的独立安装与宿主配置见 [ccdb-mcp](https://github.com/carbonstop/ccdb-mcp)。
 

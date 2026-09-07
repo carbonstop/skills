@@ -15,6 +15,15 @@ The skill searches and evaluates emission factors using either:
 
 See [installation and authentication](skills/ccdb/references/access.md). Installing this Skill alone does not install software, grant database access or perform login. Never paste tokens or API Keys into chat.
 
+To install the CLI from npm (Node.js 22+, no source checkout required):
+
+```sh
+npm install -g ccdb-cli
+ccdb-cli --version
+```
+
+Alternatively, install `ccdb-mcp-server` from npm and configure it in the host; both are not required. Published versions: CLI 0.1.0 and MCP 2.0.0.
+
 ## Independently maintained projects
 
 | Repository | Responsibility |
@@ -23,7 +32,7 @@ See [installation and authentication](skills/ccdb/references/access.md). Install
 | [ccdb-mcp](https://github.com/carbonstop/ccdb-mcp) | MCP server, authentication and deployment integration |
 | This repository | Factor selection guidance, tool usage and installation instructions |
 
-The CLI repository may require organization access until its public release is approved. The final npm package name is `ccdb-cli`; check that the requested version is published before installing, or use a maintainer-provided tarball/build from source.
+The CLI source repository may require organization access, but installing the public npm package `ccdb-cli` does not. Source builds and local tarballs are development options only.
 
 ## Migration
 
