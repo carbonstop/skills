@@ -1,239 +1,34 @@
-# 🧠 Carbonstop AI Skills
+# Carbonstop AI Skills
 
-**A collection of Skills that empower AI coding assistants with professional capabilities in the carbon emission domain.**
+[中文说明](README_zh.md)
 
-This repository is an open-source AI Skill collection by [Carbonstop](https://www.carbonstop.com), compatible with mainstream AI coding assistants (Gemini CLI / Claude Code / Cursor / Codex / OpenCode / OpenClaw). It enables AI to understand carbon emission-related queries and invoke Carbonstop's data services to accomplish professional tasks.
+This repository contains instruction-only skills. It does not bundle, build or publish CLI/MCP executables.
 
----
+## CCDB
 
-## 📦 Available Skills
+Install the entire [skills/ccdb](skills/ccdb) directory, including references and agent metadata, using your Agent's skill installation mechanism. The folder and skill name remain `ccdb` for existing installations. Existing copied installations need to be updated manually.
 
-| Skill | Description | Key Capabilities |
-|-------|-------------|------------------|
-| [ccdb](./skills/ccdb/) | CCDB Carbon Emission Factor Search | Keyword factor search · Structured JSON output · Multi-factor comparison |
+The skill searches and evaluates emission factors using either:
 
----
+- The configured OAuth-enabled CCDB MCP tools `search_emission_factors` / `get_emission_factor_detail`; or
+- The separately installed `ccdb-connect` CLI (Node.js 22+).
 
-## 🚀 Quick Start
+See [installation and authentication](skills/ccdb/references/access.md). Installing this Skill alone does not install software, grant database access or perform login. Never paste tokens or API Keys into chat.
 
-### Installation
+## Independently maintained projects
 
-Choose your AI coding assistant and install accordingly:
+| Repository | Responsibility |
+| --- | --- |
+| [ccdb-cli](https://github.com/carbonstop/ccdb-cli) | CLI source, tests and npm packaging |
+| [ccdb-mcp](https://github.com/carbonstop/ccdb-mcp) | MCP server, authentication and deployment integration |
+| This repository | Factor selection guidance, tool usage and installation instructions |
 
-<details>
-<summary><strong>Gemini CLI</strong></summary>
+The CLI repository may require organization access until its public release is approved. New scoped npm packages are not published as part of this migration; use a maintainer-provided tarball or build from source.
 
-```bash
-# Global installation
-git clone https://github.com/carbonstop/skills.git ~/.gemini/carbonstop-skills
+## Migration
 
-# Or use within a specific project (only effective in the current project)
-git clone https://github.com/carbonstop/skills.git .gemini/carbonstop-skills
-```
+Based on `ccdb-integrations` commit `b69f46b5b6f44c70067032a01edaafd13aa790d4`. The previous CLI source, checked-in tarball and CLI release workflow are retired from this branch. Existing Git history, release tags and already published packages remain unchanged.
 
-Restart Gemini CLI to automatically discover the Skills.
+Legacy `carbonstop-ccdb` / `ccdb` and legacy MCP tool names are not compatible substitutes for the new commands. No automatic fallback to unauthenticated endpoints is permitted. The old bundled Skill script is not shipped: Skill updates and executable updates now have separate lifecycles.
 
-</details>
-
-<details>
-<summary><strong>Claude Code</strong></summary>
-
-```bash
-claude mcp add-skill https://github.com/carbonstop/skills
-```
-
-Or install manually:
-
-```bash
-git clone https://github.com/carbonstop/skills.git ~/.claude/carbonstop-skills
-```
-
-In your Claude Code settings, point the skills path to `~/.claude/carbonstop-skills/`.
-
-</details>
-
-<details>
-<summary><strong>Cursor</strong></summary>
-
-```bash
-git clone https://github.com/carbonstop/skills.git ~/.cursor/carbonstop-skills
-```
-
-In your Cursor settings, point the skills path to `~/.cursor/carbonstop-skills/`.
-
-</details>
-
-<details>
-<summary><strong>Codex</strong></summary>
-
-```bash
-git clone https://github.com/carbonstop/skills.git ~/.codex/carbonstop-skills
-
-mkdir -p ~/.agents/skills
-ln -s ~/.codex/carbonstop-skills/ ~/.agents/skills/carbonstop-skills
-```
-
-Restart Codex to discover the Skills.
-
-</details>
-
-<details>
-<summary><strong>OpenCode</strong></summary>
-
-```bash
-git clone https://github.com/carbonstop/skills.git ~/.carbonstop-skills
-
-mkdir -p ~/.config/opencode/skills
-ln -s ~/.carbonstop-skills/* ~/.config/opencode/skills/
-```
-
-Restart OpenCode to discover the Skills.
-
-</details>
-
-<details>
-<summary><strong>OpenClaw</strong></summary>
-
-Simply paste the link to this repository in an OpenClaw conversation, and the assistant will install it automatically:
-
-```
-https://github.com/carbonstop/skills
-```
-
-Or install via ClawHub CLI:
-
-```bash
-npx clawhub install carbonstop-skills
-```
-
-</details>
-
-### Usage
-
-Once installed, your AI coding assistant will automatically activate the corresponding Skill based on your prompts. For example:
-
-> **You**: What is the carbon emission factor for the Chinese power grid?
->
-> **AI**: *(Automatically invokes the CCDB Skill search)* According to the 2022 data from the Ministry of Ecology and Environment, the average emission factor for the China Power Grid is 0.5703 tCO₂/MWh...
-
-> **You**: My company used 500,000 kWh of electricity last year. What is the carbon footprint?
->
-> **AI**: *(Searches factor → Calculates)* 500,000 kWh × 0.5703 kgCO₂e/kWh ≈ 285,150 kgCO₂e ≈ 285.15 tonnes CO₂e.
-
----
-
-## 📂 Project Structure
-
-```
-skills/
-├── README.md             # This file
-├── README_zh.md          # Chinese documentation
-├── cli/                  # Standalone CLI binary tool
-│   ├── package.json      # npm package (carbonstop-ccdb)
-│   ├── src/              # CLI source code
-│   ├── build.mjs         # Build script (esbuild + Node.js SEA)
-│   └── dist/             # Build output (binary + bundle)
-└── skills/               # Skills directory
-    └── ccdb/             # CCDB Carbon Emission Factor Search Skill
-        └── SKILL.md      # Skill definition and usage instructions
-```
-
----
-
-## 📖 Skill Details
-
-### CCDB — Carbon Emission Factor Search
-
-Based on Carbonstop's [CCDB Carbon Emission Factor Database](https://ccdb.carbonstop.com), this provides the capability to search, query, and compare carbon emission factors.
-
-**Core Features:**
-
-- 🔍 **Keyword Search** — Search for carbon emission factors by name; supports English and Chinese.
-- 📊 **Structured Output** — Returns JSON-formatted data containing the factor value, unit, region, year, publishing institution, etc.
-- ⚖️ **Multi-factor Comparison** — Compare the emission factors of up to 5 energy sources/materials simultaneously.
-
-**Supported Invocation Methods:**
-
-| Method | Description | Installation Required |
-|--------|-------------|:---:|
-| **`ccdb` CLI binary** | Standalone binary, no Node.js needed | Download from [Releases](https://github.com/carbonstop/skills/releases) |
-| **`npx carbonstop-ccdb`** | Run via npx, auto-downloads | Needs Node.js ≥ 18 |
-| ccdb-mcp-server (stdio) | Standard MCP Server, invoked via `mcporter` | Needs `npm i -g ccdb-mcp-server` |
-| ccdb-mcp-server (HTTP) | Standard MCP Server, Streamable HTTP mode | Needs `npm i -g ccdb-mcp-server` |
-
-**Quick Experience — CLI Binary (recommended):**
-
-```bash
-# Install globally via npm
-npm install -g carbonstop-ccdb
-
-# Search for emission factors
-ccdb search "electricity" --lang en
-
-# JSON output (ideal for programmatic handling)
-ccdb search "electricity" --lang en --json
-
-# Compare multiple keywords
-ccdb compare electricity "natural gas" diesel --lang en
-```
-
-> For detailed documentation, please refer to [skills/ccdb/SKILL.md](./skills/ccdb/SKILL.md)
-
----
-
-## 🤝 Contribution Guidelines
-
-We welcome submissions of new Skills! Each Skill should adhere to the following structure:
-
-```
-skill-name/
-├── SKILL.md              # Required — Skill definition file (includes YAML frontmatter + Markdown content)
-├── scripts/              # Optional — Helper scripts
-├── examples/             # Optional — Example usage
-└── resources/            # Optional — Additional resource files
-```
-
-### SKILL.md Specification
-
-```yaml
----
-name: skill-name
-description: |
-  A brief description of the Skill.
-
-  **Use this Skill when**:
-  (1) Trigger condition 1
-  (2) Trigger condition 2
----
-
-# Skill Title
-
-Detailed usage instructions...
-```
-
-### Steps to Submit
-
-1. Fork this repository
-2. Create a feature branch: `git checkout -b feat/my-new-skill`
-3. Add your Skill following the structure above
-4. Submit a Pull Request
-
----
-
-## 📄 License
-
-[MIT License](./LICENSE)
-
----
-
-## 🔗 Related Links
-
-- **Carbonstop Official Website**: [https://www.carbonstop.com](https://www.carbonstop.com)
-- **CCDB Carbon Emission Factor Database**: [https://ccdb.carbonstop.com](https://ccdb.carbonstop.com)
-- **ccdb-mcp-server (npm)**: [https://www.npmjs.com/package/ccdb-mcp-server](https://www.npmjs.com/package/ccdb-mcp-server)
-- **Gemini CLI**: [https://github.com/google-gemini/gemini-cli](https://github.com/google-gemini/gemini-cli)
-- **Claude Code**: [https://docs.anthropic.com/en/docs/claude-code](https://docs.anthropic.com/en/docs/claude-code)
-- **Cursor**: [https://www.cursor.com](https://www.cursor.com)
-- **Codex**: [https://github.com/openai/codex](https://github.com/openai/codex)
-- **OpenCode**: [https://github.com/opencode-ai/opencode](https://github.com/opencode-ai/opencode)
-- **OpenClaw**: [https://openclaw.ai](https://openclaw.ai)
+When changing command/tool contracts, update this Skill and its references in a coordinated PR. Current compatibility target: Connect 0.1.x CLI/MCP contracts from the source commit above; future versions require verification. Backend deployment and user permissions remain required.
