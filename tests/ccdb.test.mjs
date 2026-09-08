@@ -12,12 +12,12 @@ test('user access instructions do not require source builds or pin release numbe
     assert.doesNotMatch(text, /ccdb-(?:cli|mcp-server)@\d/, file);
   }
 });
-test('CCDB skill keeps its install identity and single-file CLI/MCP contract', async () => {
+test('CCDB skill keeps its install identity and single-file CLI-only contract', async () => {
   const skill = await readFile(resolve(root, 'skills/ccdb/SKILL.md'), 'utf8');
   assert.match(skill, /^---\nname: ccdb\ndescription: .+\n---/);
-  assert.ok(skill.includes('search_emission_factors'));
-  assert.ok(skill.includes('get_emission_factor_detail'));
+  assert.doesNotMatch(skill, /mcp|search_emission_factors|get_emission_factor_detail/i);
   assert.ok(skill.includes('ccdb-cli factor search'));
+  assert.ok(skill.includes('ccdb-cli factor detail'));
   for (const file of ['SKILL.md']) {
     const path = resolve(root, 'skills/ccdb', file);
     const text = await readFile(path, 'utf8');
