@@ -4,7 +4,7 @@ Carbonstop 碳阻迹 · Product Carbon Footprint / LCA
 
 [中文说明](README_zh.md)
 
-Help your Agent query CCDB emission factors for electricity, fuels, materials and transport activities, compare units, regions, years, system boundaries and sources, and select factors for product carbon footprints (PCF), corporate carbon accounting and life cycle assessment (LCA).
+Help your Agent use `ccdb-cli` to query CCDB emission factors for electricity, fuels, materials and transport activities, compare units, regions, years, system boundaries and sources, and select factors for product carbon footprints (PCF), corporate carbon accounting and life cycle assessment (LCA).
 
 Answers use actual query results and retain the returned Carbon Agent detail links for verification. Availability depends on account permissions and database coverage. Missing or restricted values are reported, not invented; logging in is not a promise of unrestricted access. This Skill does not perform model writes or replace a complete footprint assessment or compliance review.
 
@@ -26,30 +26,28 @@ npx skills add carbonstop/skills
 
 Select `ccdb` and your target Agent when prompted. Alternatively, use your host's Skill import mechanism to install the entire [skills/ccdb](skills/ccdb) directory. It contains only `SKILL.md`; the folder and skill name remain `ccdb` for existing installations.
 
-This installs instructions only. It does not install the CLI/MCP executable, log you in or grant database access.
+This installs instructions only. It does not install the CLI executable, log you in or grant database access. The target Agent must support local command execution and network access; a marketplace listing or successful Skill import alone does not provide these capabilities.
 
-## 2. Connect a query tool
+## 2. Install the CLI and authorize access
 
-**Already using CCDB MCP:** reuse the host's `search_emission_factors` and `get_emission_factor_detail` tools; no separate CLI is needed. Remote connectors use the host's authorization flow. For local MCP setup and login, see the [MCP guide](https://github.com/carbonstop/ccdb-mcp).
-
-**No available MCP connection:** if your Agent can execute commands and you approve installation, install the standalone CLI (the npm package requires Node.js 22+):
+Check `ccdb-cli --version` first and reuse an existing installation. If missing and you approve installation, install the CLI (the npm package requires Node.js 22+):
 
 ```sh
 npm install -g ccdb-cli@latest
-ccdb-cli auth login
+ccdb-cli --version
 ```
 
-Login defaults to device authorization, which you confirm in your browser. The default environment is production; for testing, use `--profile test` consistently for both login and queries. Without Node.js, download a [standalone binary](https://github.com/carbonstop/ccdb-cli/releases/latest) and verify the published checksum.
+Without Node.js, download a [standalone binary](https://github.com/carbonstop/ccdb-cli/releases/latest) and verify the published checksum. For first-time access, run `ccdb-cli auth login` and confirm device authorization in your browser. Reuse valid credentials rather than logging in each time. API Key authentication is an explicitly chosen alternative, not an automatic fallback after OAuth failure.
 
-Once connected and authorized, ask your Agent a real question such as the examples above. See [SKILL.md](skills/ccdb/SKILL.md) for authentication, permissions and troubleshooting. Never paste tokens or API Keys into chat.
+The default environment is production; for testing, use `--profile test` consistently for both login and queries. Explicit environment variables can override preset endpoints and client IDs. Once authorized, ask your Agent a real question such as the examples above. See [SKILL.md](skills/ccdb/SKILL.md) for authentication, permissions and troubleshooting. Never paste tokens or API Keys into chat.
 
 ## Related tools
 
 - [CCDB CLI](https://github.com/carbonstop/ccdb-cli): installation and command usage; [latest binaries](https://github.com/carbonstop/ccdb-cli/releases/latest).
-- [CCDB MCP](https://github.com/carbonstop/ccdb-mcp): connect your Agent to CCDB.
+- [CCDB MCP](https://github.com/carbonstop/ccdb-mcp): an independent connector option, not a dependency or execution path of this Skill.
 
 ## Updates
 
-The Skill and CLI/MCP tools are updated separately. Follow the skills CLI's update instructions for managed installations; replace manually copied Skill directories with a current copy. CLI/MCP installation commands use npm's latest tag rather than a hardcoded release number. Read release and migration notes before crossing breaking changes; never fall back to unauthenticated legacy endpoints.
+The Skill and CCDB CLI are updated separately. Follow the skills CLI's update instructions for managed installations; replace manually copied Skill directories with a current copy. CLI installation commands use npm's latest tag rather than a hardcoded release number. Read release and migration notes before crossing breaking changes; never fall back to unauthenticated legacy endpoints.
 
-This repository maintains Skill instructions, not CLI/MCP source code or executables. Marketplace titles and tags must follow each platform's rules; installation and wording changes do not guarantee listing or ranking.
+This repository maintains Skill instructions, not CLI source code or executables. Marketplace titles and tags must follow each platform's rules; installation and wording changes do not guarantee listing or ranking.
