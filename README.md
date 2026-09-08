@@ -15,20 +15,9 @@ The skill searches and evaluates emission factors using either:
 
 See [installation and authentication](skills/ccdb/references/access.md). Installing this Skill alone does not install software, grant database access or perform login. Never paste tokens or API Keys into chat.
 
-## Independently maintained projects
+## Related tools
 
-| Repository | Responsibility |
-| --- | --- |
-| [ccdb-cli](https://github.com/carbonstop/ccdb-cli) | CLI source, tests and npm packaging |
-| [ccdb-mcp](https://github.com/carbonstop/ccdb-mcp) | MCP server, authentication and deployment integration |
-| This repository | Factor selection guidance, tool usage and installation instructions |
+- [CCDB CLI](https://github.com/carbonstop/ccdb-cli): installation and command usage; [latest binaries](https://github.com/carbonstop/ccdb-cli/releases/latest).
+- [CCDB MCP](https://github.com/carbonstop/ccdb-mcp): connect your Agent to CCDB.
 
-The CLI repository may require organization access until its public release is approved. The final npm package name is `ccdb-cli`; check that the requested version is published before installing, or use a maintainer-provided tarball/build from source.
-
-## Migration
-
-Based on `ccdb-integrations` commit `b69f46b5b6f44c70067032a01edaafd13aa790d4`. The previous CLI source, checked-in tarball and CLI release workflow are retired from this branch. Existing Git history, release tags and already published packages remain unchanged.
-
-Legacy `carbonstop-ccdb` / `ccdb` and legacy MCP tool names are not compatible substitutes for the new commands. No automatic fallback to unauthenticated endpoints is permitted. The old bundled Skill script is not shipped: Skill updates and executable updates now have separate lifecycles.
-
-When changing command/tool contracts, update this Skill and its references in a coordinated PR. Current compatibility target: `ccdb-cli` 0.1.x and `ccdb-mcp-server` 2.x. Future breaking versions require verification. Backend deployment and user permissions remain required.
+Installation commands use npm's latest tag instead of a hardcoded release number. Consult release and migration notes before upgrading across breaking changes. Skills and installed tools are updated separately. If a tool is incompatible, report the problem or suggest upgrading; never fall back to unauthenticated legacy endpoints.

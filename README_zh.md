@@ -8,14 +8,9 @@
 
 执行工具二选一：已配置的新版 CCDB MCP，或单独安装的 `ccdb-cli` CLI（npm 版需要 Node.js 22+，独立二进制无需 Node.js）。安装 Skill 不等于安装 CLI，不会自动登录或授予数据权限。详见 [接入与排查](skills/ccdb/references/access.md)。
 
-## 三仓维护
+## 相关工具
 
-- [ccdb-cli](https://github.com/carbonstop/ccdb-cli)：CLI、测试和 npm 打包；公开前可能需要组织访问权限。
-- [ccdb-mcp](https://github.com/carbonstop/ccdb-mcp)：MCP 服务和认证集成。
-- 本仓库：因子匹配规则、调用规范、安装说明。
+- [CCDB CLI](https://github.com/carbonstop/ccdb-cli)：安装和命令使用；[最新二进制下载](https://github.com/carbonstop/ccdb-cli/releases/latest)。
+- [CCDB MCP](https://github.com/carbonstop/ccdb-mcp)：为 Agent 接入 CCDB。
 
-迁移来源为 `ccdb-integrations` 的 `b69f46b5b6f44c70067032a01edaafd13aa790d4`。当前适配 `ccdb-cli` 0.1.x 和 `ccdb-mcp-server` 2.x；后续破坏性变更需要联动更新说明。
-
-本 PR 移除旧 `cli/` 和 CLI 发布工作流，但保留 Git 历史、已存在的标签和发布物。旧 `carbonstop-ccdb` / `ccdb` 不是新 `ccdb-cli` 的兼容入口；Skill 不会回退到旧免授权 API。
-
-迁移不执行 npm 发布。新包正式发布前，从源码构建或安装维护者提供的 tgz；不要把尚未发布的包描述为可直接从 npm 安装。Skill 与 CLI/MCP 分开升级，但仍有接口契约依赖。不要在聊天中发送 Key 或 Token。
+安装命令使用 npm 的 latest 标签，不写死发布版本。跨越不兼容变更前，请阅读对应工具的发布和迁移说明。Skill 与已安装的 CLI/MCP 分别更新；遇到工具不兼容时提示升级或说明问题，不回退到旧免授权接口。不要在聊天中发送 Key 或 Token。

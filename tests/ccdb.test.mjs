@@ -5,6 +5,13 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+test('user access instructions do not require source builds or pin release numbers', async () => {
+  for (const file of ['README.md', 'README_zh.md', 'skills/ccdb/SKILL.md', 'skills/ccdb/references/access.md']) {
+    const text = await readFile(resolve(root, file), 'utf8');
+    assert.doesNotMatch(text, /npm ci|npm run (?:verify|build)|dist\/releases\//, file);
+    assert.doesNotMatch(text, /ccdb-(?:cli|mcp-server)@\d/, file);
+  }
+});
 test('CCDB skill keeps its install identity, references and separate CLI contract', async () => {
   const skill = await readFile(resolve(root, 'skills/ccdb/SKILL.md'), 'utf8');
   assert.match(skill, /^---\nname: ccdb\ndescription: .+\n---/);
