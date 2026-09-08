@@ -6,19 +6,19 @@ import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 test('user access instructions do not require source builds or pin release numbers', async () => {
-  for (const file of ['README.md', 'README_zh.md', 'skills/ccdb/SKILL.md', 'skills/ccdb/references/access.md']) {
+  for (const file of ['README.md', 'README_zh.md', 'skills/ccdb/SKILL.md']) {
     const text = await readFile(resolve(root, file), 'utf8');
     assert.doesNotMatch(text, /npm ci|npm run (?:verify|build)|dist\/releases\//, file);
     assert.doesNotMatch(text, /ccdb-(?:cli|mcp-server)@\d/, file);
   }
 });
-test('CCDB skill keeps its install identity, references and separate CLI contract', async () => {
+test('CCDB skill keeps its install identity and single-file CLI/MCP contract', async () => {
   const skill = await readFile(resolve(root, 'skills/ccdb/SKILL.md'), 'utf8');
   assert.match(skill, /^---\nname: ccdb\ndescription: .+\n---/);
   assert.ok(skill.includes('search_emission_factors'));
   assert.ok(skill.includes('get_emission_factor_detail'));
   assert.ok(skill.includes('ccdb-cli factor search'));
-  for (const file of ['SKILL.md', 'references/access.md', 'references/matching.md']) {
+  for (const file of ['SKILL.md']) {
     const path = resolve(root, 'skills/ccdb', file);
     const text = await readFile(path, 'utf8');
     assert.ok(!text.includes('scripts/ccdb.mjs'), 'must not depend on bundled CLI');
@@ -27,7 +27,5 @@ test('CCDB skill keeps its install identity, references and separate CLI contrac
       assert.ok((await stat(resolve(dirname(path), target.split('#')[0]))).isFile());
     }
   }
-  assert.ok(!(await readdir(resolve(root, 'skills/ccdb'))).includes('scripts'));
-  const metadata = await readFile(resolve(root, 'skills/ccdb/agents/openai.yaml'), 'utf8');
-  assert.ok(metadata.includes('$ccdb '));
+  assert.deepEqual((await readdir(resolve(root, 'skills/ccdb'))).sort(), ['SKILL.md']);
 });

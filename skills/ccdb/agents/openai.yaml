@@ -1,4 +1,0 @@
-interface:
-  display_name: "CCDB 因子查询与匹配"
-  short_description: "通过授权查询 CCDB 排放因子，核对核算适用性并提供来源详情链接"
-  default_prompt: "使用 $ccdb 查询适合当前核算场景的排放因子，并说明选择依据与来源。"

@@ -4,9 +4,9 @@
 
 ## 安装和使用
 
-将完整的 [skills/ccdb](skills/ccdb) 目录按宿主的 Skill 安装方式导入，保留 references 和 agents。Skill 名和目录仍为 `ccdb`，已有副本需自行更新。
+将完整的 [skills/ccdb](skills/ccdb) 目录按宿主的 Skill 安装方式导入，目录内只需 SKILL.md。Skill 名和目录仍为 `ccdb`，已有副本需自行更新。
 
-执行工具二选一：已配置的新版 CCDB MCP，或单独安装的 `ccdb-cli` CLI（npm 版需要 Node.js 22+，独立二进制无需 Node.js）。安装 Skill 不等于安装 CLI，不会自动登录或授予数据权限。详见 [接入与排查](skills/ccdb/references/access.md)。
+执行工具二选一：已配置的新版 CCDB MCP，或单独安装的 `ccdb-cli` CLI（npm 版需要 Node.js 22+，独立二进制无需 Node.js）。安装 Skill 不等于安装 CLI，不会自动登录或授予数据权限。详见 [接入与排查](skills/ccdb/SKILL.md)。
 
 ## 相关工具
 

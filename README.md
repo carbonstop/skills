@@ -6,14 +6,14 @@ This repository contains instruction-only skills. It does not bundle, build or p
 
 ## CCDB
 
-Install the entire [skills/ccdb](skills/ccdb) directory, including references and agent metadata, using your Agent's skill installation mechanism. The folder and skill name remain `ccdb` for existing installations. Existing copied installations need to be updated manually.
+Install the entire [skills/ccdb](skills/ccdb) directory, containing only SKILL.md, using your Agent's skill installation mechanism. The folder and skill name remain `ccdb` for existing installations. Existing copied installations need to be updated manually.
 
 The skill searches and evaluates emission factors using either:
 
 - The configured OAuth-enabled CCDB MCP tools `search_emission_factors` / `get_emission_factor_detail`; or
 - The separately installed `ccdb-cli` CLI (npm requires Node.js 22+; native binaries do not).
 
-See [installation and authentication](skills/ccdb/references/access.md). Installing this Skill alone does not install software, grant database access or perform login. Never paste tokens or API Keys into chat.
+See [installation and authentication](skills/ccdb/SKILL.md). Installing this Skill alone does not install software, grant database access or perform login. Never paste tokens or API Keys into chat.
 
 ## Related tools
 
