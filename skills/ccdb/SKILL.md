@@ -32,6 +32,18 @@ npm 版需要 Node.js 22+；不使用 Node.js 时，从 [官方最新 Release](h
 
 CLI 状态和诊断：`ccdb-cli auth status --json`、`ccdb-cli doctor --json`。本地 MCP 对应 `ccdb-mcp status --json`、`ccdb-mcp doctor --json`。status 只反映本地凭证；doctor 检查发现端点，不查询因子，均不能证明业务权限有效。
 
+测试环境的 CLI 示例（详情占位符需先替换，不整段盲目执行）：
+
+```sh
+ccdb-cli auth login --profile test
+ccdb-cli auth status --profile test --json
+ccdb-cli factor search "电力" --profile test --limit 5 --json
+```
+
+本地 MCP 使用 `ccdb-mcp login --profile test`；宿主同时设置 `CCDB_PROFILE=test`，并配置 `command: "ccdb-mcp"`、`args: ["stdio"]`。由宿主启动常驻进程，不在安装终端运行 stdio 并等待退出。
+
+接入验收分层：命令可执行、凭证已保存、MCP 宿主能列出两个工具、实际查询返回业务响应。前三项不证明业务权限有效；用户需要查询时才做小范围验证，不为安装验收批量消耗配额。远程 MCP 跳过本地安装和凭证检查。
+
 ## 查询与匹配
 
 先确定材料/活动、产品或企业核算口径、单位、地区、适用年度、技术路线及边界。仅在缺失信息会影响选择时询问，不默认中国或最新年份。
@@ -60,5 +72,5 @@ ccdb-cli factor detail "<搜索返回的factorId>" --language zh --json
 - 401 提示登录或检查 Key，403 说明权限不足，429 按响应停止并等待用户安排。已经收到业务结果或这些错误后，不换 CLI/MCP、Key 或旧接口重复查询。仅传输不可用需要切换工具时，先确认环境和身份一致。
 - `invalid_client` 请管理员核对所选环境的客户端登记与启用状态，不自行生成/猜测 client ID。刷新中断时可能已发生 Token 轮换，应重新登录，不重放旧 Refresh Token。
 - `CREDENTIAL_STORE_ERROR` 时，可由用户显式选择 `CCDB_AUTH_STORE=file` 再登录。支持加密文件存储的工具会记住该身份的选择；主密钥也在本机，保护强度不等同于系统密钥服务。旧工具的文件格式可能不同，先按对应工具说明升级；限制本机文件访问权限。
-- 默认 logout 只清理本地凭证；`auth logout --revoke` 撤销整条应用授权，可能影响共用授权的工具。两者不删除环境 Key，也不在服务端停用 API Key。
+- 默认 logout 只清理本地凭证；CLI 的 `ccdb-cli auth logout --revoke`、本地 MCP 的 `ccdb-mcp logout --revoke` 撤销整条应用授权，可能影响共用授权的工具。两者不删除环境 Key，也不在服务端停用 API Key。
 - 排错可提供错误码、requestId、HTTP 状态和 Retry-After，不提供 Key、Access Token、Refresh Token 或完整凭证日志。
