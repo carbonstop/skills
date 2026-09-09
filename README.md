@@ -6,7 +6,7 @@ Carbonstop 碳阻迹 · Product Carbon Footprint / LCA
 
 Help your Agent use `ccdb-cli` to query CCDB emission factors for electricity, fuels, materials and transport activities, compare units, regions, years, system boundaries and sources, and select factors for product carbon footprints (PCF), corporate carbon accounting and life cycle assessment (LCA).
 
-Answers use actual query results and retain the returned Carbon Agent detail links for verification. Availability depends on account permissions and database coverage. Missing or restricted values are reported, not invented; logging in is not a promise of unrestricted access. This Skill does not perform model writes or replace a complete footprint assessment or compliance review.
+Answers use actual query results and retain the returned detail links to [Carbon Agent](https://agent.carbonstop.com), where you can view the corresponding factors and their conditions of use. Availability depends on account permissions and database coverage. This Skill does not perform model writes or replace a complete footprint assessment or compliance review.
 
 ## Try asking
 
@@ -14,7 +14,7 @@ Answers use actual query results and retain the returned Carbon Agent detail lin
 - “Compare these two CCDB electricity factors by unit, year and system boundary. Can they be used in the same accounting scenario?”
 - “Check whether this CCDB factor fits my product carbon footprint, with its detail link and conditions of use.”
 
-These are task examples, not guaranteed database matches. General conceptual explanations do not require a CCDB query.
+These are task examples, not guaranteed database matches.
 
 ## 1. Install the Skill
 
@@ -24,9 +24,9 @@ For hosts supported by the [skills CLI](https://skills.sh/docs/cli), run with No
 npx skills add carbonstop/skills
 ```
 
-Select `ccdb` and your target Agent when prompted. Alternatively, use your host's Skill import mechanism to install the entire [skills/ccdb](skills/ccdb) directory. It contains only `SKILL.md`; the folder and skill name remain `ccdb` for existing installations.
+Select `ccdb` and your target Agent when prompted. Alternatively, use your host's Skill import mechanism to install the [skills/ccdb](skills/ccdb) directory containing `SKILL.md`.
 
-This installs instructions only. It does not install the CLI executable, log you in or grant database access. The target Agent must support local command execution and network access; a marketplace listing or successful Skill import alone does not provide these capabilities.
+Your Agent needs local command execution, network access, CCDB CLI and valid authorization. Installing the Skill adds task instructions; it does not install the CLI or log you in.
 
 ## 2. Install the CLI and authorize access
 
@@ -37,17 +37,29 @@ npm install -g ccdb-cli@latest
 ccdb-cli --version
 ```
 
-Without Node.js, download a [standalone binary](https://github.com/carbonstop/ccdb-cli/releases/latest) and verify the published checksum. For first-time access, run `ccdb-cli auth login` and confirm device authorization in your browser. Reuse valid credentials rather than logging in each time. API Key authentication is an explicitly chosen alternative, not an automatic fallback after OAuth failure.
+Without Node.js, download a [standalone binary](https://github.com/carbonstop/ccdb-cli/releases/latest), verify the checksum, and follow the [CLI installation guide](https://github.com/carbonstop/ccdb-cli). For first-time access, run:
 
-The default environment is production; for testing, use `--profile test` consistently for both login and queries. Explicit environment variables can override preset endpoints and client IDs. Once authorized, ask your Agent a real question such as the examples above. See [SKILL.md](skills/ccdb/SKILL.md) for authentication, permissions and troubleshooting. Never paste tokens or API Keys into chat.
+```sh
+ccdb-cli auth login
+```
+
+Confirm device authorization in your browser. Reuse valid credentials rather than logging in each time. API Key authentication is an explicitly chosen alternative, not an automatic fallback after OAuth failure. Never paste tokens or API Keys into chat.
+
+The default environment is production. If using a test environment, keep `--profile test` consistent across login and queries; see [environment configuration](https://github.com/carbonstop/ccdb-cli/blob/main/docs/CONFIGURATION.md).
+
+## 3. Ask your Agent
+
+Ask one of the example questions above, with the material/activity, unit, region and accounting boundary you need. The Agent uses CLI search and detail results to explain suitable candidates and retain their Carbon Agent links.
+
+If results are missing or values are restricted, the Agent should explain the limitation instead of inventing data; signing in does not guarantee unrestricted access. See [SKILL.md](skills/ccdb/SKILL.md) for the query, selection and safety rules.
+
+If installation or access fails, use the [CLI troubleshooting guide](https://github.com/carbonstop/ccdb-cli). Share only the error code and requestId, not credentials. Importing a Skill cannot enable command execution in a host that does not support it.
 
 ## Related tools
 
 - [CCDB CLI](https://github.com/carbonstop/ccdb-cli): installation and command usage; [latest binaries](https://github.com/carbonstop/ccdb-cli/releases/latest).
-- [CCDB MCP](https://github.com/carbonstop/ccdb-mcp): an independent connector option, not a dependency or execution path of this Skill.
+- [CCDB MCP](https://github.com/carbonstop/ccdb-mcp): an independent connector for MCP hosts.
 
 ## Updates
 
-The Skill and CCDB CLI are updated separately. Follow the skills CLI's update instructions for managed installations; replace manually copied Skill directories with a current copy. CLI installation commands use npm's latest tag rather than a hardcoded release number. Read release and migration notes before crossing breaking changes; never fall back to unauthenticated legacy endpoints.
-
-This repository maintains Skill instructions, not CLI source code or executables. Marketplace titles and tags must follow each platform's rules; installation and wording changes do not guarantee listing or ranking.
+Update the Skill through your installation tool or host; for a manual import, replace the Skill directory with the current repository copy. Update CCDB CLI separately using its installation guide. Read migration notes before crossing breaking changes.

@@ -9,7 +9,7 @@ Carbonstop 碳阻迹 · 产品碳足迹 / LCA。用于需要实际因子数据�
 
 ## CLI 检查与安装
 
-本 Skill 通过独立的 `ccdb-cli` 完成查询，仅提供说明，不包含程序，不授予数据库权限。宿主必须能执行本地命令并访问 CCDB 服务；仅能导入 Skill 文本不代表具备查询能力。
+通过 `ccdb-cli` 完成查询。宿主需要本地命令执行能力、网络访问和有效 CCDB 授权；安装 Skill 不会自动安装 CLI 或登录。
 
 先执行 `ccdb-cli --version` 检查是否已安装，可用时复用，不重复安装或登录。命令不存在且用户同意安装时执行：
 
@@ -18,7 +18,7 @@ npm install -g ccdb-cli@latest
 ccdb-cli --version
 ```
 
-npm 版需要 Node.js 22+；不使用 Node.js 时，从 [官方最新 Release](https://github.com/carbonstop/ccdb-cli/releases/latest) 获取对应系统/架构的独立二进制并核对校验文件。镜像未同步时，安装命令追加 `--registry=https://registry.npmjs.org/`。重复安装命令可升级；跨越不兼容变更前查看发布说明，不自行构建源码。
+npm 版需要 Node.js 22+；不使用 Node.js 时，从 [官方最新 Release](https://github.com/carbonstop/ccdb-cli/releases/latest) 获取对应系统/架构的独立二进制并核对校验文件。安装、更新及镜像排错见 [CLI 说明](https://github.com/carbonstop/ccdb-cli)，不自行构建源码。
 
 无安装权限、命令执行能力或可用后端时，说明缺失条件并停止查询，不擅自更换接入方式或伪造查询结果。
 
@@ -31,16 +31,7 @@ npm 版需要 Node.js 22+；不使用 Node.js 时，从 [官方最新 Release](h
 - API Key 是用户主动选择的备选。通过宿主的安全配置向 CLI 注入 `CCDB_API_KEY`，或使用 `ccdb-cli auth login --method api-key` 的不回显输入/受控 stdin。
 - 显式环境 Key 优先于保存的 OAuth 凭证；OAuth 失败不自动切换 Key，Key 失败也不切换 OAuth。恢复 OAuth 需用户从实际执行环境移除 Key 配置并登录。不要求在聊天或命令参数中提供密钥，不打印凭证文件。
 
-状态和诊断：`ccdb-cli auth status --json`、`ccdb-cli doctor --json`。status 只反映本地凭证；doctor 检查发现端点，不查询因子，均不能证明业务权限有效。
-
-需要首次登录时的默认环境示例（先获用户授权，按需执行，不整段盲目执行）：
-
-```sh
-ccdb-cli auth login
-ccdb-cli auth status --json
-```
-
-命令可执行、凭证已保存，不等于有因子查询权限。用户需要查询时再用小范围实际请求验证，不为安装验收批量消耗配额。
+状态和诊断：`ccdb-cli auth status --json` 检查本地凭证，`ccdb-cli doctor --json` 检查发现端点，都不证明业务权限。按需执行，不为安装验收额外查询；用户需要数据时再通过小范围实际请求验证业务权限。
 
 ## 查询与匹配
 
